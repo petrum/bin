@@ -15,9 +15,10 @@ def info(*args):
   logging.info(res)
 
 parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
-parser.add_argument('-s', '--short', action='store_true', help='Short view', required=False)
+parser.add_argument('-b', '--brief', action='store_true', help='Brief view', required=False)
 parser.add_argument('-d', '--descriptions', help='The decription file', required=False)
 parser.add_argument('-u', '--unexpected', action='store_true', help='Show unexpected devices', required=False)
+parser.add_argument('-s', '--sort', action='store_true', help='Sort by IP', required=False)
 parser.add_argument('-v', '--verbose', action='store_true', help='Verbose', required=False)
 
 args = parser.parse_args()
@@ -60,10 +61,12 @@ info(nmap)
 
 nmap['n'] = nmap.ip.str.split('.', expand=True)[3].astype(int)
 info(nmap)
-df = pd.merge(nmap, d, how='left', left_on='mac', right_on='mac').sort_values(by='n')
+df = pd.merge(nmap, d, how='left', left_on='mac', right_on='mac')
+if args.sort:
+    df = df.sort_values(by='n')
 del df['n']
 
-header = ['ip', 'dn', 'descr'] if args.short else df.columns
+header = ['ip', 'dn', 'descr'] if args.brief else df.columns
 if not args.descriptions:
     header = [x for x in header if x not in ['expected', 'descr']]
 
