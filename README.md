@@ -15,7 +15,7 @@ $> sudo nmap -sP 192.168.1.1/24 | ./nmap2descr.py
 $> head mac-addresses.csv
 mac,desc,expected
 00:18:01:12:34:56,Fios main ch 6,1
-0C:89:10:12:34:56,TV,1
+00:18:01:12:34:56,Roku,1
 
 $> sudo nmap -sP 192.168.1.1/24 | ./nmap2descr.py -d mac-addresses.csv
                ip                     dn                mac                      company               desc  expected
