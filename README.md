@@ -1,5 +1,5 @@
-## bin
-# nmap2descr.py
+# bin
+### nmap2descr.py
 ```
 $> sudo nmap -sP 192.168.1.1/24 | ./nmap2descr.py -s
                ip                     dn
