@@ -34,7 +34,7 @@ if args.descriptions:
 info(d)
 nmap = pd.DataFrame(columns=['ip', 'dn', 'mac', 'company'])
 
-code, myMac = commands.getstatusoutput("ifconfig | grep HWaddr | head -n 1 | sed 's/.*HWaddr \\(.*\\)/\\1/g'")
+code, myMac = commands.getstatusoutput("/sbin/ifconfig | grep HWaddr | head -n 1 | sed 's/.*HWaddr \\(.*\\)/\\1/g'")
 info(code, myMac)
 
 for line in sys.stdin:
