@@ -73,5 +73,6 @@ if not args.descriptions:
 print df[header]
 
 if args.unexpected:
+    print "Unexpected:"
     print df[df.expected != 1].T
 
