@@ -15,14 +15,14 @@ class NMap:
                 print(line)
                 n = re.search('Nmap scan report for (.*) \((.*)\)', line)
                 if n:
-                    df.loc[len(d)] = [n.group(2), n.group(1), None, None]
+                    df.loc[len(df)] = [n.group(2), n.group(1), None, None]
                 else:
                     n = re.search('Nmap scan report for (.*)', line)
                     if n:
-                        df.loc[len(d)] = [n.group(1), None, None, None]
+                        df.loc[len(df)] = [n.group(1), None, None, None]
                 m = re.search('MAC Address: (.*) \((.*)\)', line)
                 if m:
-                    last_index = len(d) - 1
+                    last_index = len(df) - 1
                     df.loc[last_index]['mac'] = m.group(1)
                     df.loc[last_index]['company'] = m.group(2)
 
