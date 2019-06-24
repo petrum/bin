@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import pandas as pd
 import re
@@ -12,7 +12,7 @@ class NMap:
         if data != None:
             with open(data) as fp:
                 line = fp.readline()
-                print line
+                print(line)
                 n = re.search('Nmap scan report for (.*) \((.*)\)', line)
                 if n:
                     df.loc[len(nmap)] = [n.group(2), n.group(1), None, None]
@@ -30,7 +30,7 @@ class NMap:
 
 if __name__ == "__main__":
     n = NMap("/home/petrum/scripts/mac-addresses.csv")
-    print n.get("/home/petrum/scripts/nmap-sample1.txt")
+    print(n.get("/home/petrum/scripts/nmap-sample1.txt"))
 
 
 
