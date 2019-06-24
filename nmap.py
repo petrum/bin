@@ -30,8 +30,8 @@ class NMap:
                         last_index = len(df) - 1
                         df.loc[last_index]['mac'] = m.group(1)
                         df.loc[last_index]['company'] = m.group(2)
-
-        return df
+        res = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
+        return res
 
 if __name__ == "__main__":
     n = NMap("/home/petrum/scripts/mac-addresses.csv")
