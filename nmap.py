@@ -3,6 +3,8 @@
 import pandas as pd
 import re
 
+pd.set_option('display.expand_frame_repr', False)
+
 class NMap:
     def __init__(self, d):
         self.descr = d
@@ -11,20 +13,23 @@ class NMap:
         df = pd.DataFrame(columns=['ip', 'dn', 'mac', 'company'])
         if data != None:
             with open(data) as fp:
-                line = fp.readline()
-                print(line)
-                n = re.search('Nmap scan report for (.*) \((.*)\)', line)
-                if n:
-                    df.loc[len(df)] = [n.group(2), n.group(1), None, None]
-                else:
-                    n = re.search('Nmap scan report for (.*)', line)
+                while True:
+                    line = fp.readline()
+                    #print(line)
+                    if not line:
+                        break
+                    n = re.search('Nmap scan report for (.*) \((.*)\)', line)
                     if n:
-                        df.loc[len(df)] = [n.group(1), None, None, None]
-                m = re.search('MAC Address: (.*) \((.*)\)', line)
-                if m:
-                    last_index = len(df) - 1
-                    df.loc[last_index]['mac'] = m.group(1)
-                    df.loc[last_index]['company'] = m.group(2)
+                        df.loc[len(df)] = [n.group(2), n.group(1), None, None]
+                    else:
+                        n = re.search('Nmap scan report for (.*)', line)
+                        if n:
+                            df.loc[len(df)] = [n.group(1), None, None, None]
+                    m = re.search('MAC Address: (.*) \((.*)\)', line)
+                    if m:
+                        last_index = len(df) - 1
+                        df.loc[last_index]['mac'] = m.group(1)
+                        df.loc[last_index]['company'] = m.group(2)
 
         return df
 
