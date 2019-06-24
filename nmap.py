@@ -36,6 +36,7 @@ class NMap:
 if __name__ == "__main__":
     n = NMap("/home/petrum/scripts/mac-addresses.csv")
     print(n.get("/home/petrum/scripts/nmap-sample1.txt"))
+    print(n.get("/home/petrum/scripts/nmap-sample2.txt"))
 
 
 
