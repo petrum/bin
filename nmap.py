@@ -6,10 +6,12 @@ class NMap:
     def __init__(self, d):
         self.descr = d
     def get(self):
-        pass
+        dDf = pd.read_csv(self.descr)
+        return dDf
 
 if __name__ == "__main__":
-    n = NMap("")
+    n = NMap("/home/petrum/scripts/mac-addresses.csv")
     print n.get()
+
 
 
