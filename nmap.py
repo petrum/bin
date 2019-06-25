@@ -5,6 +5,7 @@ import re
 import sys
 import argparse
 import logging
+import datetime
 
 pd.set_option('display.expand_frame_repr', False)
 
@@ -39,6 +40,7 @@ class NMap:
             df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
             df = df[df.mac.notnull()]
         df.set_index('ip', inplace=True)
+        df['ts'] = datetime.datetime.now()
         return df
 
 def main():
