@@ -2,6 +2,7 @@
 
 import pandas as pd
 import re
+import sys
 
 pd.set_option('display.expand_frame_repr', False)
 
@@ -40,8 +41,12 @@ class NMap:
 
 if __name__ == "__main__":
     n = NMap("/home/petrum/scripts/mac-addresses.csv")
-    print(n.get("/home/petrum/scripts/nmap-sample1.txt"))
-    print(n.get("/home/petrum/scripts/nmap-sample2.txt"))
+    if len(sys.argv) == 1:
+        print(n.get())
+    else:
+        for file in sys.argv[1:]:
+            print(n.get(file))
+    
 
 
 
