@@ -49,7 +49,6 @@ def main():
     args = parser.parse_args()
     logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-5s %(message)s', datefmt='%Y%m%d %H:%M:%S', level=logging.DEBUG if args.verbose else logging.WARNING)
     n = NMap(args.descriptions)
-    print(args.tests)
     if len(args.tests) != 0:
         for test in args.tests:
             print(n.get(test))
