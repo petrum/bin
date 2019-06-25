@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 import pandas as pd
 import re
@@ -6,6 +6,7 @@ import sys
 import argparse
 import logging
 import datetime
+import commands
 
 pd.set_option('display.expand_frame_repr', False)
 
@@ -18,7 +19,12 @@ class NMap:
             with open(data) as fp:
                 lines = fp.readlines()
         else:
-            lines = sys.stdin.readlines()
+            cmd = "sudo nmap -sP 192.168.1.1/24"
+            code, out = commands.getstatusoutput(cmd)
+            if code != 0:
+                logging.error("The '{}' command returned code = {}".format(cmd, code)) 
+                sys.exit(-1) 
+            lines = out.splitlines()
         for line in lines:
             #print(line)
             if not line:
@@ -54,8 +60,10 @@ def main():
     if len(args.tests) != 0:
         for test in args.tests:
             print(n.get(test))
-    else:
-        print(n.get())
+        return
+    df = n.get()
+    df['active'] = False
+
 
 if __name__ == "__main__":
     main()
