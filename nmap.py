@@ -63,7 +63,7 @@ def main():
         return
     df = n.get()
     df['active'] = False
-
+    print(df)
 
 if __name__ == "__main__":
     main()
