@@ -3,14 +3,15 @@
 import pandas as pd
 import re
 import sys
+import argparse
+import logging
 
 pd.set_option('display.expand_frame_repr', False)
 
 class NMap:
-    def __init__(self, d):
+    def __init__(self, d = None):
         self.descr = d
     def get(self, data = None):
-        d = pd.read_csv(self.descr)
         df = pd.DataFrame(columns=['ip', 'dn', 'mac', 'company'])
         if data != None:
             with open(data) as fp:
@@ -33,19 +34,29 @@ class NMap:
                 last_index = len(df) - 1
                 df.loc[last_index]['mac'] = m.group(1)
                 df.loc[last_index]['company'] = m.group(2)
-        res = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
-        res = res[res.mac.notnull()]
-        res.set_index('ip', inplace=True)
+        if self.descr != None:    
+            d = pd.read_csv(self.descr)
+            df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
+            df = df[df.mac.notnull()]
+        df.set_index('ip', inplace=True)
+        return df
 
-        return res
+def main():
+    parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
+    parser.add_argument('-d', '--descriptions', help='The decription file', required=False)
+    parser.add_argument('-v', '--verbose', action='store_true', help='Verbose', required=False)
+    parser.add_argument('tests', nargs=argparse.REMAINDER, action="store")
+    args = parser.parse_args()
+    logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-5s %(message)s', datefmt='%Y%m%d %H:%M:%S', level=logging.DEBUG if args.verbose else logging.WARNING)
+    n = NMap(args.descriptions)
+    if args.tests != None:
+        for test in args.tests:
+            print(n.get(test))
+    else:
+        print(n.get())
 
 if __name__ == "__main__":
-    n = NMap("/home/petrum/scripts/mac-addresses.csv")
-    if len(sys.argv) == 1:
-        print(n.get())
-    else:
-        for file in sys.argv[1:]:
-            print(n.get(file))
+    main()
     
 
 
