@@ -31,7 +31,9 @@ class NMap:
                         df.loc[last_index]['mac'] = m.group(1)
                         df.loc[last_index]['company'] = m.group(2)
         res = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
+        res = res[res.where(res.mac.isnull())]
         res.set_index('ip', inplace=True)
+
         return res
 
 if __name__ == "__main__":
