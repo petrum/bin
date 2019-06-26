@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import pandas as pd
 import re
@@ -6,7 +6,7 @@ import sys
 import argparse
 import logging
 import datetime
-import commands
+import subprocess
 
 pd.set_option('display.expand_frame_repr', False)
 
@@ -20,7 +20,7 @@ class NMap:
                 lines = fp.readlines()
         else:
             cmd = "/usr/bin/sudo /usr/bin/nmap -sP 192.168.1.1/24"
-            code, out = commands.getstatusoutput(cmd)
+            code, out = subprocess.getstatusoutput(cmd)
             if code != 0:
                 logging.error("The '{}' command returned code = {}".format(cmd, code)) 
                 sys.exit(-1) 
