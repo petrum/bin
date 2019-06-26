@@ -26,7 +26,7 @@ class NMap:
                 sys.exit(-1) 
             #print(out)
             lines = out.splitlines()
-            print(lines)
+        print(lines)
         for line in lines:
             #print(line)
             if not line:
