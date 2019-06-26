@@ -19,7 +19,7 @@ class NMap:
             with open(data) as fp:
                 lines = fp.readlines()
         else:
-            cmd = "sudo nmap -sP 192.168.1.1/24"
+            cmd = "/usr/bin/sudo /usr/bin/nmap -sP 192.168.1.1/24"
             code, out = commands.getstatusoutput(cmd)
             if code != 0:
                 logging.error("The '{}' command returned code = {}".format(cmd, code)) 
