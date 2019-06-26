@@ -24,6 +24,7 @@ class NMap:
             if code != 0:
                 logging.error("The '{}' command returned code = {}".format(cmd, code)) 
                 sys.exit(-1) 
+            print(out)
             lines = out.splitlines()
         for line in lines:
             #print(line)
