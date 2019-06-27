@@ -42,10 +42,10 @@ class NMap:
                 last_index = len(df) - 1
                 df.loc[last_index]['mac'] = m.group(1)
                 df.loc[last_index]['company'] = m.group(2)
+        df = df[df.mac.notnull()]
         if self.descr != None:    
             d = pd.read_csv(self.descr)
             df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
-            df = df[df.mac.notnull()]
         df.set_index('ip', inplace=True)
         df['ts'] = datetime.datetime.now()
         return df
