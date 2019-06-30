@@ -17,7 +17,7 @@ def sendEmail(to, txt, subject):
     print(txt)
     if to == None:
         return
-    run(['/usr/bin/mail', '-s', subject, to], input=txt.encode())
+    run(['/usr/bin/mail', '-s', subject, to], input=txt.encode(), shell=True)
 
 
 class NMap:
