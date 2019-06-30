@@ -7,6 +7,7 @@ import argparse
 import logging
 import datetime
 import subprocess
+import time
 
 pd.set_option('display.expand_frame_repr', False)
 
@@ -66,7 +67,19 @@ def main():
         return
     df = n.get()
     df['active'] = False
-    print(df)
+    while True:
+        time.sleep(30)
+        df.update(n.get())
+        minago = 1
+        left = df[df.ts < datetime.datetime.now() - datetime.timedelta(minutes=minago) & df.active]
+        if len(left):
+            print("These have left {} min ago:\n{}".format(minago, left))
+            df.loc[left.index, 'active'] = False
+        joined = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(minutes=1))) & !df.active]
+        if (len(joined)):
+            print("These have just joined {}:\n{}".format(minago, joined))
+            df.loc[joined.index, 'active'] = True
+    #print(df)
 
 if __name__ == "__main__":
     main()
