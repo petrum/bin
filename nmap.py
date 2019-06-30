@@ -8,7 +8,7 @@ import logging
 import datetime
 import subprocess
 import time
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import run
 
 pd.set_option('display.expand_frame_repr', False)
 
@@ -17,10 +17,8 @@ def sendEmail(to, txt, subject):
     print(txt)
     if to == None:
         return
-    p = Popen(['/usr/bin/mail', '-s', subject, to], stdin=PIPE, stdout=PIPE,stderr=PIPE)
-    (out,err) = p.communicate(txt.encode())
-    print(out)
-    print(err)
+    run(['/usr/bin/mail', '-s', subject, to], input=txt)
+
 
 class NMap:
     def __init__(self, d = None):
