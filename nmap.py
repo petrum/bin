@@ -14,8 +14,8 @@ import tempfile
 pd.set_option('display.expand_frame_repr', False)
 
 def sendEmail(to, txt, subject):
-    print(subject)
-    print(txt)
+    #print(subject)
+    #print(txt)
     if to == None:
         return
     tmp = tempfile.NamedTemporaryFile()
@@ -23,10 +23,10 @@ def sendEmail(to, txt, subject):
         f.write(txt)
         f.close()
         cmd = "/usr/bin/mail -s '{}' '{}' < '{}'".format(subject, to, tmp.name)
-        print(cmd)
+        #print(cmd)
         res = run(cmd, shell=True)
-        print(res.stderr)        
-        print(res.stdout)
+        #print(res.stderr)        
+        #print(res.stdout)
 
 class NMap:
     def __init__(self, d = None):
