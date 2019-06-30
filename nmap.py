@@ -65,17 +65,19 @@ def main():
         for test in args.tests:
             print(n.get(test))
         return
+    data = None
+    data = "/home/petrum/scripts/nmap-sample1.txt"
     df = n.get()
     df['active'] = False
     while True:
         time.sleep(30)
         df.update(n.get())
         minago = 1
-        left = df[df.ts < datetime.datetime.now() - datetime.timedelta(minutes=minago) & df.active]
+        left = df[df.ts < datetime.datetime.now() - datetime.timedelta(minutes=minago) & (df.active == True)]
         if len(left):
             print("These have left {} min ago:\n{}".format(minago, left))
             df.loc[left.index, 'active'] = False
-        joined = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(minutes=1))) & !df.active]
+        joined = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(minutes=1))) & (df.active == False)]
         if (len(joined)):
             print("These have just joined {}:\n{}".format(minago, joined))
             df.loc[joined.index, 'active'] = True
