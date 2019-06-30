@@ -17,8 +17,7 @@ def sendEmail(to, txt, subject):
     print(txt)
     if to == None:
         return
-    mail = "/usr/bin/mail -s '{}' {}".format(subject, to)
-    p = Popen([mail], stdin=PIPE)
+    p = Popen(['/usr/bin/mail', '-s', subject, to], stdin=PIPE)
     p.communicate(input=txt)[0]
 
 class NMap:
