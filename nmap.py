@@ -9,6 +9,7 @@ import datetime
 import subprocess
 import time
 from subprocess import run, PIPE
+import tempfile
 
 pd.set_option('display.expand_frame_repr', False)
 
@@ -17,7 +18,11 @@ def sendEmail(to, txt, subject):
     print(txt)
     if to == None:
         return
-    res = run("echo {} | /usr/bin/mail -s {} {}".format(txt, subject, to), shell=True)
+    tmp = tempfile.NamedTemporaryFile()
+    with open(tmp.name, 'w') as f:
+        f.write(txt)
+        print(tmp)
+        run("/usr/bin/mail -s {} {} < {}".format(subject, to, tmp), shell=True)
 
 class NMap:
     def __init__(self, d = None):
