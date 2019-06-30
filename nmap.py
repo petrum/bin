@@ -21,8 +21,8 @@ def sendEmail(to, txt, subject):
     tmp = tempfile.NamedTemporaryFile()
     with open(tmp.name, 'w') as f:
         f.write(txt)
-        print(tmp)
-        run("/usr/bin/mail -s {} {} < {}".format(subject, to, tmp), shell=True)
+        print(tmp.name)
+        run("/usr/bin/mail -s {} {} < {}".format(subject, to, tmp.name), shell=True)
 
 class NMap:
     def __init__(self, d = None):
