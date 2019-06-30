@@ -77,7 +77,7 @@ def main():
         if len(left):
             print("These have left {} min ago:\n{}".format(minago, left))
             df.loc[left.index, 'active'] = False
-        joined = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(minutes=1))) & ~df.active]
+        joined = df[(df.ts > (datetime.datetime.now() - datetime.timedelta(minutes=1))) & ~df.active]
         if (len(joined)):
             print("These have just joined {}:\n{}".format(minago, joined))
             df.loc[joined.index, 'active'] = True
