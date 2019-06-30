@@ -23,10 +23,7 @@ def sendEmail(to, txt, subject):
         f.write(txt)
         f.close()
         cmd = "/usr/bin/mail -s '{}' '{}' < '{}'".format(subject, to, tmp.name)
-        #print(cmd)
-        res = run(cmd, shell=True)
-        #print(res.stderr)        
-        #print(res.stdout)
+        run(cmd, shell=True)
 
 class NMap:
     def __init__(self, d = None):
@@ -87,8 +84,6 @@ def main():
         for test in args.tests:
             print(n.get(test))
         return
-    data = None
-    #data = "/home/petrum/scripts/nmap-sample1.txt"
     df = n.get()
     df['active'] = False
     loop = 30
@@ -102,11 +97,15 @@ def main():
         df.update(n.get())
         left = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & df.active]
         if len(left):
-            sendEmail(args.email, "These have left {} seconds ago:\n{}".format(ago, left[['mac', 'company', 'descr']]), "Some devices left the network")
+            sendEmail(args.email, "These have left {} seconds ago:\n{}".format(
+                ago, left[['mac', 'company', 'descr']]), 
+                "Some devices left the network")
             df.loc[left.index, 'active'] = False
         joined = df[(df.ts > (datetime.datetime.now() - datetime.timedelta(minutes=1))) & ~df.active]
         if (len(joined)):
-            sendEmail(args.email, "These have just joined the network:\n{}".format(joined[['mac', 'company', 'descr']]), "Some devices just joined the network")
+            sendEmail(args.email, "These have just joined the network:\n{}".format(
+                joined[['mac', 'company', 'descr']]), 
+                "Some devices just joined the network")
             df.loc[joined.index, 'active'] = True
     #print(df)
 
