@@ -95,6 +95,7 @@ def main():
     while True:
         time.sleep(loop)
         df.update(n.get())
+        df.active.fillna(False)
         left = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & df.active]
         if len(left):
             sendEmail(args.email, "These have left {} seconds ago:\n{}".format(
