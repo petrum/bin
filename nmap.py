@@ -20,7 +20,7 @@ def sendEmail(to, txt, subject):
         return
     msg = MIMEText(txt)
     msg['Subject'] = subject    
-    msg['From'] = 'automail@gamail.com'
+    msg['From'] = 'petrum.auto@gmail.com'
     msg['To'] = to
     s = smtplib.SMTP('localhost')
     s.sendmail(msg['From'], [to], msg.as_string())
