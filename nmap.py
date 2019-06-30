@@ -22,8 +22,9 @@ def sendEmail(to, txt, subject):
     with open(tmp.name, 'w') as f:
         f.write(txt)
         f.close()
-        print(tmp.name)
-        res = run("/usr/bin/mail -s '{}' '{}' < '{}'".format(subject, to, tmp.name), shell=True)
+        cmd = "/usr/bin/mail -s '{}' '{}' < '{}'".format(subject, to, tmp.name)
+        print(cmd)
+        res = run(cmd, shell=True)
         print(res.stderr)        
         print(res.stdout)
 
