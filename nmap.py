@@ -17,7 +17,7 @@ def sendEmail(to, txt, subject):
     print(txt)
     if to == None:
         return
-    res = run("echo {} | /usr/bin/mail -s {} {}".format(txt, subject, to], shell=True)
+    res = run("echo {} | /usr/bin/mail -s {} {}".format(txt, subject, to), shell=True)
 
 class NMap:
     def __init__(self, d = None):
