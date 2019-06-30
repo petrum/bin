@@ -18,7 +18,7 @@ def sendEmail(to, txt, subject):
     if to == None:
         return
     p = Popen(['/usr/bin/mail', '-s', subject, to], stdin=PIPE)
-    p.communicate(input=txt)[0]
+    p.communicate(input=txt.encode())[0]
 
 class NMap:
     def __init__(self, d = None):
