@@ -19,7 +19,7 @@ def sendEmail(to, txt, subject):
         return
     res = run(['/usr/bin/mail', '-s', subject, to], input=txt.encode(), shell=True, stdout=PIPE, stderr=PIPE)
     print('stderr = ', res.stderr)
-    print('stdout = ', res.stderr)
+    print('stdout = ', res.stdout)
 
 class NMap:
     def __init__(self, d = None):
