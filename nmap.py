@@ -74,7 +74,7 @@ def main():
     parser.add_argument('-v', '--verbose', action='store_true', help='Verbose', required=False)
     parser.add_argument('tests', nargs=argparse.REMAINDER, action="store")
     parser.add_argument('--email', help='The email', required=False)
-    parser.add_argument('--minago', help='The minago period in minutes', required=False)
+    parser.add_argument('--ago', help='The ago period in seconds', required=False)
     parser.add_argument('--loop', help='The loop period in seconds', required=False)
 
     args = parser.parse_args()
@@ -91,19 +91,19 @@ def main():
     loop = 30
     if args.loop:
         loop = int(args.loop)
-    minago = 3
-    if args.minago:
-        minago = int(args.minago)
+    ago = 180
+    if args.ago:
+        ago = int(args.ago)
     while True:
         time.sleep(loop)
         df.update(n.get())
-        left = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(minutes=minago))) & df.active]
+        left = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & df.active]
         if len(left):
-            sendEmail(args.email, "These have left {} min ago:\n{}".format(minago, left), "Some devices left the network")
+            sendEmail(args.email, "These have left {} seconds ago:\n{}".format(ago, left), "Some devices left the network")
             df.loc[left.index, 'active'] = False
         joined = df[(df.ts > (datetime.datetime.now() - datetime.timedelta(minutes=1))) & ~df.active]
         if (len(joined)):
-            sendEmail(args.email, "These have just joined the network:\n{}".format(minago, left), "Some devices joined the network")
+            sendEmail(args.email, "These have just joined the network:\n{}".format(joined), "Some devices just joined the network")
             df.loc[joined.index, 'active'] = True
     #print(df)
 
