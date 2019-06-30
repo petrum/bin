@@ -108,7 +108,7 @@ def main():
                 joined[['mac', 'company', 'descr']]), 
                 "Some devices just joined the network")
             df.loc[joined.index, 'active'] = True
-        with open("/tmp/nmap-dump-" + str(os.getpid()) + ".csv", "w") as f:
+        with open("/tmp/nmap-dump-" + str(os.getpid()) + ".txt", "w") as f:
             print(str(df), file=f)
     #print(df)
 
