@@ -70,10 +70,10 @@ def main():
     df = n.get()
     df['active'] = False
     while True:
-        time.sleep(30)
+        time.sleep(1)
         df.update(n.get())
         minago = 1
-        left = df[df.ts < datetime.datetime.now() - datetime.timedelta(minutes=minago) & (df.active == True)]
+        left = df[df.ts < (datetime.datetime.now() - datetime.timedelta(minutes=minago)) & (df.active == True)]
         if len(left):
             print("These have left {} min ago:\n{}".format(minago, left))
             df.loc[left.index, 'active'] = False
