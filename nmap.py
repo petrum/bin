@@ -21,6 +21,7 @@ def sendEmail(to, txt, subject):
     tmp = tempfile.NamedTemporaryFile()
     with open(tmp.name, 'w') as f:
         f.write(txt)
+        f.close()
         print(tmp.name)
         run("/usr/bin/mail -s {} {} < {}".format(subject, to, tmp.name), shell=True)
 
