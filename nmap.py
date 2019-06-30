@@ -8,8 +8,23 @@ import logging
 import datetime
 import subprocess
 import time
+import smtplib
+from email.mime.text import MIMEText
 
 pd.set_option('display.expand_frame_repr', False)
+
+def sendEmail(to, txt, subject):
+    if to == None:
+        print(subject)
+        print(txt)
+        return
+    msg = MIMEText(txt)
+    msg['Subject'] = subject    
+    msg['From'] = 'automail@gamail.com'
+    msg['To'] = to
+    s = smtplib.SMTP('localhost')
+    s.sendmail(msg['From'], [to], msg.as_string())
+    s.quit()
 
 class NMap:
     def __init__(self, d = None):
@@ -58,6 +73,10 @@ def main():
     parser.add_argument('-d', '--descriptions', help='The decription file', required=False)
     parser.add_argument('-v', '--verbose', action='store_true', help='Verbose', required=False)
     parser.add_argument('tests', nargs=argparse.REMAINDER, action="store")
+    parser.add_argument('--email', help='The email', required=False)
+    parser.add_argument('--minago', help='The minago period in minutes', required=False)
+    parser.add_argument('--loop', help='The loop period in seconds', required=False)
+
     args = parser.parse_args()
     logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-5s %(message)s', datefmt='%Y%m%d %H:%M:%S', level=logging.DEBUG if args.verbose else logging.WARNING)
     n = NMap(args.descriptions)
@@ -66,20 +85,25 @@ def main():
             print(n.get(test))
         return
     data = None
-    data = "/home/petrum/scripts/nmap-sample1.txt"
+    #data = "/home/petrum/scripts/nmap-sample1.txt"
     df = n.get()
     df['active'] = False
+    loop = 30
+    if args.loop:
+        loop = int(args.loop)
+    minago = 3
+    if args.minago:
+        minago = int(args.minago)
     while True:
-        time.sleep(1)
+        time.sleep(loop)
         df.update(n.get())
-        minago = 1
         left = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(minutes=minago))) & df.active]
         if len(left):
-            print("These have left {} min ago:\n{}".format(minago, left))
+            sendEmail(args.email, "These have left {} min ago:\n{}".format(minago, left), "Some devices left the network")
             df.loc[left.index, 'active'] = False
         joined = df[(df.ts > (datetime.datetime.now() - datetime.timedelta(minutes=1))) & ~df.active]
         if (len(joined)):
-            print("These have just joined {}:\n{}".format(minago, joined))
+            sendEmail(args.email, "These have just joined the network:\n{}".format(minago, left), "Some devices joined the network")
             df.loc[joined.index, 'active'] = True
     #print(df)
 
