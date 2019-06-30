@@ -10,6 +10,7 @@ import subprocess
 import time
 from subprocess import run, PIPE
 import tempfile
+import os
 
 pd.set_option('display.expand_frame_repr', False)
 
@@ -63,7 +64,6 @@ class NMap:
         if self.descr != None:
             d = pd.read_csv(self.descr)
             df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
-            df = df[~(df.expected == 1)]
         df.set_index('ip', inplace=True)
         df['ts'] = datetime.datetime.now()
         return df
@@ -96,18 +96,19 @@ def main():
         time.sleep(loop)
         df.update(n.get())
         df.active.fillna(False)
-        left = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & df.active]
+        left = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & df.active & ~(df.expected == 1)]
         if len(left):
             sendEmail(args.email, "These have left {} seconds ago:\n{}".format(
                 ago, left[['mac', 'company', 'descr']]), 
                 "Some devices left the network")
             df.loc[left.index, 'active'] = False
-        joined = df[(df.ts > (datetime.datetime.now() - datetime.timedelta(minutes=1))) & ~df.active]
+        joined = df[(df.ts > (datetime.datetime.now() - datetime.timedelta(minutes=1))) & ~df.active & ~(df.expected == 1)]
         if (len(joined)):
             sendEmail(args.email, "These have just joined the network:\n{}".format(
                 joined[['mac', 'company', 'descr']]), 
                 "Some devices just joined the network")
             df.loc[joined.index, 'active'] = True
+        df.to_csv("/tmp/nmap-dump-" + str(os.getpid()) + ".csv")
     #print(df)
 
 if __name__ == "__main__":
