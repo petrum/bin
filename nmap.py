@@ -23,7 +23,7 @@ def sendEmail(to, txt, subject):
         f.write(txt)
         f.close()
         print(tmp.name)
-        run("/usr/bin/mail -s {} {} < {}".format(subject, to, tmp.name), shell=True)
+        run("/usr/bin/mail -s '{}' '{}' < '{}'".format(subject, to, tmp.name), shell=True)
 
 class NMap:
     def __init__(self, d = None):
