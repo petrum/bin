@@ -8,23 +8,18 @@ import logging
 import datetime
 import subprocess
 import time
-import smtplib
-from email.mime.text import MIMEText
+from subprocess import Popen, PIPE, STDOUT
 
 pd.set_option('display.expand_frame_repr', False)
 
 def sendEmail(to, txt, subject):
+    print(subject)
+    print(txt)
     if to == None:
-        print(subject)
-        print(txt)
         return
-    msg = MIMEText(txt)
-    msg['Subject'] = subject    
-    msg['From'] = 'petrum.auto@gmail.com'
-    msg['To'] = to
-    s = smtplib.SMTP('localhost')
-    s.sendmail(msg['From'], [to], msg.as_string())
-    s.quit()
+    mail = "/usr/bin/mail -s '{}' {}".format(subject, to)
+    p = Popen([mail], stdin=PIPE)
+    p.communicate(input=txt)[0]
 
 class NMap:
     def __init__(self, d = None):
