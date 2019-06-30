@@ -45,7 +45,7 @@ class NMap:
         for line in lines:
             #print(line)
             #line = line + "\n"
-            n = re.search('Nmap scan report for (.*) \((.*)\)', line)
+            n = re.search(r'Nmap scan report for (.*) \((.*)\)', line)
             #print(n)
             if n:
                 df.loc[len(df)] = [n.group(2), n.group(1), None, None]
@@ -53,7 +53,7 @@ class NMap:
                 n = re.search('Nmap scan report for (.*)', line)
                 if n:
                     df.loc[len(df)] = [n.group(1), None, None, None]
-            m = re.search('MAC Address: (.*) \((.*)\)', line)
+            m = re.search(r'MAC Address: (.*) \((.*)\)', line)
             #print(m)
             if m:
                 last_index = len(df) - 1
