@@ -66,6 +66,7 @@ class NMap:
         if self.descr != None:    
             d = pd.read_csv(self.descr)
             df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
+            df = df[~df.expected]
         df.set_index('ip', inplace=True)
         df['ts'] = datetime.datetime.now()
         return df
