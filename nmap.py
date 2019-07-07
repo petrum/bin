@@ -97,7 +97,9 @@ def main():
         ago = int(args.ago)
     while True:
         time.sleep(loop)
-        df.update(n.get())
+        #df.update(n.get())
+        df2 = n.get()
+        pd.concat([df[~df.index.isin(df2.index)], df2])
         df.active.fillna(False)
         left = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & df.active & ~(df.expected == 1)]
         if len(left):
