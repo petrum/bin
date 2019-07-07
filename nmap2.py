@@ -77,8 +77,9 @@ class NMap:
 
     def get(self):
         df = self.getImpl()
+        df['active'] = True
         df.set_index('mac', inplace=True)
-        logging.debug("Get:\n{}".format(df))  
+        logging.debug("Get:\n{}".format(df))
         #logging.debug("Info:\n{}".format(df.info()))  
         return df     
 
@@ -92,7 +93,6 @@ def action(email, ago, df1, df2):
             wasActive = i1.active
             ts = i1.ts
             df1.loc[m] = i2
-            df1.loc[m, 'active'] = True           
             if not wasActive and not i1.expected:
                 sendEmail(email, "These have rejoined the network, last seen at {}:\n{}".format(ts, i2), "devices rejoined")
         elif m in df1.index:
@@ -106,7 +106,6 @@ def action(email, ago, df1, df2):
             logging.debug("df2 '{}'".format(m))
             i2 = df2.loc[m]
             df1.loc[m] = i2
-            df1.loc[m, 'active'] = True
             if not i2.expected:
                 sendEmail(email, "These have just joined the network:\n{}".format(i2), "devices joined")
 
