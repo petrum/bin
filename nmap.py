@@ -15,8 +15,8 @@ import os
 pd.set_option('display.expand_frame_repr', False)
 
 def sendEmail(to, txt, subject):
-    #print(subject)
-    #print(txt)
+    print(subject)
+    print(txt)
     if to == None:
         return
     tmp = tempfile.NamedTemporaryFile()
