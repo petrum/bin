@@ -106,8 +106,8 @@ def main():
 
         dfCommon = df[df.index.isin(df2.index)]
         if len(dfCommon) > 0:
-            dfCommon.loc[dfCommon.index, 'ts'] = df2.ts
-            dfCommon.loc[dfCommon.index, 'active'] = True
+            dfCommon['ts'] = df2.ts
+            dfCommon['active'] = True
         
         dfLeft = df[~df.index.isin(df2.index)]
 
