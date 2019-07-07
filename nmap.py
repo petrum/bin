@@ -13,7 +13,7 @@ import tempfile
 import os
 
 pd.set_option('display.expand_frame_repr', False)
-pd.set_option('mode.chained_assignment', 'raise')
+pd.set_option('mode.chained_assignment', None)
 
 def sendEmail(to, txt, subject):
     print(subject)
