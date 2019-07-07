@@ -97,22 +97,33 @@ def main():
         ago = int(args.ago)
     while True:
         time.sleep(loop)
-        #df.update(n.get())
         df2 = n.get()
-        df = pd.concat([df[~df.index.isin(df2.index)], df2])
-        df.active.fillna(False)
-        left = df[(df.ts < (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & df.active & ~(df.expected == 1)]
-        if len(left):
-            sendEmail(args.email, "These have left {} seconds ago:\n{}".format(
-                ago, left[['mac', 'company', 'descr']]), 
-                "Some devices left the network")
-            df.loc[left.index, 'active'] = False
-        joined = df[(df.ts > (datetime.datetime.now() - datetime.timedelta(minutes=1))) & ~df.active & ~(df.expected == 1)]
-        if (len(joined)):
+
+        dfJoined = df2[~df2.index.isin(df.index)]
+        dfJoined['active'] = True
+
+        dfCommon = df[df.index.isin(df2.index)]
+        dfCommon.ts = df2.ts
+        dfCommon['active'] = True
+        
+        dfLeft = df[~df.index.isin(df2.index)]
+
+        leftAgo = dfLeft[(dfLeft.ts > (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & dfLeft.active]
+        if len(leftAgo):
+            unexpectedLeftAgo = leftAgo[leftAgo.expected == 1]
+            if len(unexpectedLeftAgo) > 0:
+                sendEmail(args.email, "These have left {} seconds ago:\n{}".format(
+                    ago, unexpectedLeftAgo[['mac', 'company', 'descr']]), 
+                    "Some devices left the network")
+            dfLeft.loc[leftAgo.index, 'active'] = False
+
+        unexpectedJoined = dfJoined[~(dfJoined.expected == 1)]
+        if (len(unexpectedJoined)):
             sendEmail(args.email, "These have just joined the network:\n{}".format(
-                joined[['mac', 'company', 'descr']]), 
+                unexpectedJoined[['mac', 'company', 'descr']]), 
                 "Some devices just joined the network")
-            df.loc[joined.index, 'active'] = True
+
+        df = pd.concat([dfJoined, dfCommon, dfLeft])
         with open("/tmp/nmap-dump-" + str(os.getpid()) + ".txt", "w") as f:
             print(str(df), file=f)
     #print(df)
