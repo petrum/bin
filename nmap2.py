@@ -40,6 +40,7 @@ class NMap:
         if len(self.tests) > 0:
             df = pd.read_csv(self.tests[self.index])
             self.index = self.index + 1
+            print(df)
             return df
         df = pd.DataFrame(columns=['ip', 'dn', 'mac', 'company'])
         cmd = "/usr/bin/sudo /usr/bin/nmap -sP 192.168.1.1/24"
@@ -73,6 +74,7 @@ class NMap:
             df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
         #df.set_index('ip', inplace=True)
         df.loc[df.index, 'ts'] = datetime.datetime.now()
+        logging.debug(df)
         return df
 
 def main():
@@ -102,6 +104,5 @@ def main():
         df2 = n.get()
         with open("/tmp/nmap-dump-" + str(os.getpid()) + ".txt", "w") as f:
             print(str(df), file=f)
-    print(df)
 if __name__ == "__main__":
     main()
