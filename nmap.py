@@ -102,7 +102,7 @@ def main():
 
         dfJoined = df2[~df2.index.isin(df.index)]
         if len(dfJoined) > 0:
-            dfJoined.loc[dfJoined.index, 'active'] = True
+            dfJoined['active'] = True
 
         dfCommon = df[df.index.isin(df2.index)]
         if len(dfCommon) > 0:
