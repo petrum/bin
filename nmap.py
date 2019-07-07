@@ -100,11 +100,13 @@ def main():
         df2 = n.get()
 
         dfJoined = df2[~df2.index.isin(df.index)]
-        dfJoined.loc[dfJoined.index, 'active'] = True
+        if len(dfJoined) > 0:
+            dfJoined.loc[dfJoined.index, 'active'] = True
 
         dfCommon = df[df.index.isin(df2.index)]
-        dfCommon.loc[dfCommon.index, 'ts'] = df2.ts
-        dfCommon.loc[dfCommon.index, 'active'] = True
+        if len(dfCommon) > 0:
+            dfCommon.loc[dfCommon.index, 'ts'] = df2.ts
+            dfCommon.loc[dfCommon.index, 'active'] = True
         
         dfLeft = df[~df.index.isin(df2.index)]
 
