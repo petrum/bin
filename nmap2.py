@@ -74,7 +74,7 @@ class NMap:
             df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
         #df.set_index('ip', inplace=True)
         df['ts'] = datetime.datetime.now()
-        logging.debug(df)
+        logging.debug("\n".format(df)
         return df
 
 def main():
