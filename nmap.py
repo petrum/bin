@@ -103,8 +103,8 @@ def main():
         dfJoined.loc[dfJoined.index, 'active'] = True
 
         dfCommon = df[df.index.isin(df2.index)]
-        dfCommon.ts = df2.ts
-        dfCommon.active = True
+        dfCommon.loc[dfCommon.index, 'ts'] = df2.ts
+        dfCommon.loc[dfCommon.index, 'active'] = True
         
         dfLeft = df[~df.index.isin(df2.index)]
 
