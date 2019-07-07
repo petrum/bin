@@ -118,14 +118,14 @@ def main():
             if len(unexpectedLeftAgo) > 0:
                 sendEmail(args.email, "These have left {} seconds ago:\n{}".format(
                     ago, unexpectedLeftAgo[['mac', 'company', 'descr']]), 
-                    "Some devices left the network")
+                    "devices left")
             dfLeft.loc[leftAgo.index, 'active'] = False
 
         unexpectedJoined = dfJoined[dfJoined.expected == 0]
         if len(unexpectedJoined) > 0:
             sendEmail(args.email, "These have just joined the network:\n{}".format(
                 unexpectedJoined[['mac', 'company', 'descr']]), 
-                "Some devices just joined the network")
+                "devices joined")
 
         df = pd.concat([dfJoined, dfCommon, dfLeft], sort=True).sort_index()
         with open("/tmp/nmap-dump-" + str(os.getpid()) + ".txt", "w") as f:
