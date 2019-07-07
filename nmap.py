@@ -112,7 +112,7 @@ def main():
         dfLeft = df[~df.index.isin(df2.index)]
 
         leftAgo = dfLeft[(dfLeft.ts < (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & dfLeft.active]
-        if len(leftAgo):
+        if len(leftAgo) > 0:
             unexpectedLeftAgo = leftAgo[leftAgo.expected == 0]
             if len(unexpectedLeftAgo) > 0:
                 sendEmail(args.email, "These have left {} seconds ago:\n{}".format(
@@ -121,7 +121,7 @@ def main():
             dfLeft.loc[leftAgo.index, 'active'] = False
 
         unexpectedJoined = dfJoined[dfJoined.expected == 0]
-        if (len(unexpectedJoined)):
+        if len(unexpectedJoined) > 0:
             sendEmail(args.email, "These have just joined the network:\n{}".format(
                 unexpectedJoined[['mac', 'company', 'descr']]), 
                 "Some devices just joined the network")
