@@ -65,7 +65,7 @@ class NMap:
             d = pd.read_csv(self.descr)
             df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
         df.set_index('ip', inplace=True)
-        df['ts'] = datetime.datetime.now()
+        df.loc[df.index, 'ts'] = datetime.datetime.now()
         return df
 
 def main():
