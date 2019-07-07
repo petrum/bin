@@ -97,6 +97,7 @@ def main():
     if args.ago:
         ago = int(args.ago)
     while True:
+        sys.stdout.flush()
         time.sleep(loop)
         df2 = n.get()
 
