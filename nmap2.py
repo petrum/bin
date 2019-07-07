@@ -94,20 +94,20 @@ def action(email, ago, df1, df2):
             ts = i1.ts
             df1.loc[m] = i2
             if not wasActive and not i1.expected:
-                sendEmail(email, "This has rejoined the network, last seen at {}:\n{}".format(ts, i2), "device rejoined")
+                sendEmail(email, "This has rejoined the network, last seen at {}:\n{}".format(ts, i2), "device rejoined '{}'".format(i2.descr))
         elif m in df1.index:
             logging.debug("df1 '{}'".format(m))
             i1 = df1.loc[m]
             if i1.active and (datetime.datetime.now() > (i1.ts + datetime.timedelta(seconds=ago))):
                 df1.loc[m, 'active'] = False
                 if not i1.expected:
-                    sendEmail(email, "This has left {} ago:\n{}".format(ago, i1), "device left")
+                    sendEmail(email, "This has left {} ago:\n{}".format(ago, i1), "device left '{}'".format(i2.descr))
         else:
             logging.debug("df2 '{}'".format(m))
             i2 = df2.loc[m]
             df1.loc[m] = i2
             if not i2.expected:
-                sendEmail(email, "This has just joined the network:\n{}".format(i2), "device joined")
+                sendEmail(email, "This has just joined the network:\n{}".format(i2), "device joined '{}'".format(i2.descr))
 
 def main():
     parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
