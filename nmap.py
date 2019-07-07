@@ -110,7 +110,7 @@ def main():
         
         dfLeft = df[~df.index.isin(df2.index)]
 
-        leftAgo = dfLeft[(dfLeft.ts > (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & dfLeft.active]
+        leftAgo = dfLeft[(dfLeft.ts < (datetime.datetime.now() - datetime.timedelta(seconds=ago))) & dfLeft.active]
         if len(leftAgo):
             unexpectedLeftAgo = leftAgo[leftAgo.expected == 1]
             if len(unexpectedLeftAgo) > 0:
