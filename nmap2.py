@@ -94,7 +94,6 @@ def action(email, ago, df1, df2):
             df1.loc[m] = i2
             df1.loc[m, 'active'] = True           
             if not wasActive and not i1.expected:
-                # send email: rejoin, last seen 'ts'
                 sendEmail(email, "These have rejoined the network, last seen at {}:\n{}".format(ts, i2), "devices rejoined")
         elif m in df1.index:
             logging.debug("df1 '{}'".format(m))
