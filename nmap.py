@@ -85,7 +85,7 @@ def main():
             print(n.get(test))
         return
     df = n.get()
-    df['active'] = True
+    df.loc[df.index, 'active'] = True
     loop = -1
     if args.loop:
         loop = int(args.loop)
