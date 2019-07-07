@@ -36,7 +36,7 @@ class NMap:
     def isDone(self):
         return False if len(self.tests) == 0 else self.index >= len(self.tests)
 
-    def get(self):
+    def getImpl(self):
         if len(self.tests) > 0:
             df = pd.read_csv(self.tests[self.index])
             self.index = self.index + 1
@@ -74,8 +74,13 @@ class NMap:
             df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
         #df.set_index('ip', inplace=True)
         df['ts'] = datetime.datetime.now()
-        logging.debug("\n{}".format(df))
         return df
+
+    def get(self):
+        df = self.getImpl()
+        df.set_index('mac', inplace=True)
+        logging.debug("\n{}".format(df))  
+        return df     
 
 def main():
     parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
