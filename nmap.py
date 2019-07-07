@@ -125,7 +125,7 @@ def main():
                 unexpectedJoined[['mac', 'company', 'descr']]), 
                 "Some devices just joined the network")
 
-        df = pd.concat([dfJoined, dfCommon, dfLeft], sort=True)
+        df = pd.concat([dfJoined, dfCommon, dfLeft], sort=True).sort_values(by='ts')
         with open("/tmp/nmap-dump-" + str(os.getpid()) + ".txt", "w") as f:
             print(str(df), file=f)
     #print(df)
