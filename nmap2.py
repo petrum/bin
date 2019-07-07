@@ -82,6 +82,9 @@ class NMap:
         logging.debug("\n{}".format(df))  
         return df     
 
+def action(df1, df2):
+    pass
+
 def main():
     parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
     parser.add_argument('-d', '--descriptions', help='The decription file', required=False)
@@ -107,6 +110,7 @@ def main():
         sys.stdout.flush()
         time.sleep(loop)
         df2 = n.get()
+        action(df, df2)
         with open("/tmp/nmap-dump-" + str(os.getpid()) + ".txt", "w") as f:
             print(str(df), file=f)
 if __name__ == "__main__":
