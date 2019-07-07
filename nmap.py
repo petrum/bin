@@ -100,7 +100,7 @@ def main():
         df2 = n.get()
 
         dfJoined = df2[~df2.index.isin(df.index)]
-        dfJoined['active'] = True
+        dfJoined.loc[dfJoined.index, 'active'] = True
 
         dfCommon = df[df.index.isin(df2.index)]
         dfCommon.ts = df2.ts
