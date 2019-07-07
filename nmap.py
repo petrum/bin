@@ -89,6 +89,9 @@ def main():
     loop = 30
     if args.loop:
         loop = int(args.loop)
+    if loop == -1:
+        print(df)
+        sys.exit(0)
     ago = 180
     if args.ago:
         ago = int(args.ago)
