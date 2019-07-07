@@ -78,7 +78,7 @@ class NMap:
     def get(self):
         df = self.getImpl()
         df.set_index('mac', inplace=True)
-        logging.debug("\n{}".format(df))  
+        logging.debug("Get:\n{}".format(df))  
         return df     
 
 def action(df1, df2):
@@ -86,11 +86,16 @@ def action(df1, df2):
     for m in allIndex:
         if m in df1.index and m in df2.index:
             logging.debug("common '{}'".format(m))
+            i1 = df1.loc[m]  
+            df1.loc[m, 'active'] = False
+            i2 = df2.loc[m]  
         elif m in df1.index:
             logging.debug("df1 '{}'".format(m))
+            df1.loc[m, 'active'] = False
         else:
             logging.debug("df2 '{}'".format(m))
-
+            df1.loc[m] = df2.loc[m]
+            df1.loc[m, 'active'] = True
 
 def main():
     parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
@@ -120,6 +125,6 @@ def main():
         action(df, df2)
         with open("/tmp/nmap-dump-" + str(os.getpid()) + ".txt", "w") as f:
             print(str(df), file=f)
-
+        logging.debug("Final:\n{}".format(df))
 if __name__ == "__main__":
     main()
