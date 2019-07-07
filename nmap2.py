@@ -86,9 +86,14 @@ def action(df1, df2):
     for m in allIndex:
         if m in df1.index and m in df2.index:
             logging.debug("common '{}'".format(m))
-            i1 = df1.loc[m]  
-            df1.loc[m, 'active'] = False
-            i2 = df2.loc[m]  
+            i1 = df1.loc[m]
+            i2 = df2.loc[m]
+            wasActive = i1.active
+            df1.loc[m] = i2
+            df1.loc[m, 'active'] = True           
+            if not wasActive and not i1.expected:
+                #send email
+                pass
         elif m in df1.index:
             logging.debug("df1 '{}'".format(m))
             df1.loc[m, 'active'] = False
