@@ -86,7 +86,7 @@ def main():
         return
     df = n.get()
     df['active'] = True
-    loop = 30
+    loop = -1
     if args.loop:
         loop = int(args.loop)
     if loop == -1:
