@@ -107,6 +107,11 @@ def main():
 
         dfCommon = df[df.index.isin(df2.index)]
         if len(dfCommon) > 0:
+            unexpectedRejoined = dfCommon[~dfCommon.active & (dfCommon.expected == 0)]
+            if len(unexpectedRejoined) > 0:
+                sendEmail(args.email, "These have rejoined the network:\n{}".format(
+                    unexpectedRejoined[['mac', 'company', 'descr']]), 
+                    "devices rejoined")
             dfCommon['ts'] = df2.ts
             dfCommon['active'] = True
         
