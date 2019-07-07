@@ -108,7 +108,8 @@ def action(email, ago, df1, df2):
             i2 = df2.loc[m]
             df1.loc[m] = i2
             df1.loc[m, 'active'] = True
-            sendEmail(email, "These have just joined the network:\n{}".format(i2), "devices joined")
+            if not i2.expected:
+                sendEmail(email, "These have just joined the network:\n{}".format(i2), "devices joined")
 
 def main():
     parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
