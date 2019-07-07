@@ -40,7 +40,6 @@ class NMap:
         if len(self.tests) > 0:
             df = pd.read_csv(self.tests[self.index])
             self.index = self.index + 1
-            print(df)
             return df
         df = pd.DataFrame(columns=['ip', 'dn', 'mac', 'company'])
         cmd = "/usr/bin/sudo /usr/bin/nmap -sP 192.168.1.1/24"
@@ -83,7 +82,15 @@ class NMap:
         return df     
 
 def action(df1, df2):
-    pass
+    allIndex = df1.index.union(df2.index)
+    for m in allIndex:
+        if m in df1.index and m in df2.index:
+            logging.debug("common '{}'".format(m))
+        elif m in df1.index:
+            logging.debug("df1 '{}'".format(m))
+        else:
+            logging.debug("df2 '{}'".format(m))
+
 
 def main():
     parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
