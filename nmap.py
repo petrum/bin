@@ -104,7 +104,7 @@ def main():
 
         dfCommon = df[df.index.isin(df2.index)]
         dfCommon.ts = df2.ts
-        dfCommon['active'] = True
+        dfCommon.active = True
         
         dfLeft = df[~df.index.isin(df2.index)]
 
