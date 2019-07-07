@@ -113,5 +113,6 @@ def main():
         action(df, df2)
         with open("/tmp/nmap-dump-" + str(os.getpid()) + ".txt", "w") as f:
             print(str(df), file=f)
+
 if __name__ == "__main__":
     main()
