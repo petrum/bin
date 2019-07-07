@@ -38,7 +38,7 @@ class NMap:
 
     def getImpl(self):
         if len(self.tests) > 0:
-            df = pd.read_csv(self.tests[self.index])
+            df = pd.read_csv(self.tests[self.index], parse_dates=['ts'])
             self.index = self.index + 1
             return df
         df = pd.DataFrame(columns=['ip', 'dn', 'mac', 'company'])
@@ -79,9 +79,10 @@ class NMap:
         df = self.getImpl()
         df.set_index('mac', inplace=True)
         logging.debug("Get:\n{}".format(df))  
+        logging.debug("Info:\n{}".format(df.info()))  
         return df     
 
-def action(df1, df2):
+def action(ago, df1, df2):
     allIndex = df1.index.union(df2.index)
     for m in allIndex:
         if m in df1.index and m in df2.index:
@@ -89,18 +90,25 @@ def action(df1, df2):
             i1 = df1.loc[m]
             i2 = df2.loc[m]
             wasActive = i1.active
+            ts = i1.ts
             df1.loc[m] = i2
             df1.loc[m, 'active'] = True           
             if not wasActive and not i1.expected:
-                #send email
+                # send email: rejoin, last seen 'ts'
                 pass
         elif m in df1.index:
             logging.debug("df1 '{}'".format(m))
-            df1.loc[m, 'active'] = False
+            i1 = df1.loc[m]
+            if i1.active and (datetime.datetime.now() > (i1.ts + datetime.timedelta(seconds=ago))):
+                df1.loc[m, 'active'] = False
+                if not i1.expected:
+                    # send email: expired time ago
+                    pass
         else:
             logging.debug("df2 '{}'".format(m))
             df1.loc[m] = df2.loc[m]
             df1.loc[m, 'active'] = True
+            # send email: new join
 
 def main():
     parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
@@ -127,7 +135,7 @@ def main():
         sys.stdout.flush()
         time.sleep(loop)
         df2 = n.get()
-        action(df, df2)
+        action(ago, df, df2)
         with open("/tmp/nmap-dump-" + str(os.getpid()) + ".txt", "w") as f:
             print(str(df), file=f)
         logging.debug("Final:\n{}".format(df))
