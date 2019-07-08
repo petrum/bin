@@ -47,14 +47,9 @@ class NMap:
         if code != 0:
             logging.error("The '{}' command returned code = {}".format(cmd, code)) 
             sys.exit(-1) 
-        #print(out)
         lines = out.splitlines()
-        #print(lines)
         for line in lines:
-            #print(line)
-            #line = line + "\n"
             n = re.search(r'Nmap scan report for (.*) \((.*)\)', line)
-            #print(n)
             if n:
                 df.loc[len(df)] = [n.group(2), n.group(1), None, None]
             else:
@@ -62,7 +57,6 @@ class NMap:
                 if n:
                     df.loc[len(df)] = [n.group(1), None, None, None]
             m = re.search(r'MAC Address: (.*) \((.*)\)', line)
-            #print(m)
             if m:
                 last_index = len(df) - 1
                 df.loc[last_index]['mac'] = m.group(1)
@@ -71,7 +65,6 @@ class NMap:
         if self.descr != None:
             d = pd.read_csv(self.descr)
             df = pd.merge(df, d, how='left', left_on='mac', right_on='mac')
-        #df.set_index('ip', inplace=True)
         df['ts'] = datetime.datetime.now()
         return df
 
