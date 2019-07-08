@@ -106,8 +106,8 @@ def action(email, ago, df1, df2):
             logging.debug("df2 '{}'".format(m))
             i2 = df2.loc[m]
             df1.loc[m] = i2
-            if not i1.expected:
-                sendEmail(email, "This has just joined the network:\n{}".format(i2), "device joined '{}'".format(i1.descr))
+            if not i2.expected:
+                sendEmail(email, "This has just joined the network:\n{}".format(i2), "device joined '{}'".format(i2.descr))
 
 def main():
     parser = argparse.ArgumentParser(description='It parses the nmap output in a Pandas dataframe')
