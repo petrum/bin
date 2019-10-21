@@ -30,10 +30,11 @@ elif echo "$UNTIL" | grep -q '^....-..-..'; then # starts with a date (like '201
 else
     echo "Specifying a time..." 1>&2
     WSEC=$(($(date -d "$UNTIL" +%s) - NOW_SEC))
-    if [[ $D -lt $NOW_SEC ]]; then
+    if [[ $WSEC -lt 0 ]]; then
         echo "Too late for today, going for next day..." 1>&2
         WSEC=$(($(date -d "$UNTIL 1 day" +%s) - NOW_SEC))
     fi
 fi
 
 doSleep $WSEC
+
