@@ -37,5 +37,3 @@ else
 fi
 
 doSleep $WSEC
-
-doSleep $WSEC
