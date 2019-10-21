@@ -9,7 +9,7 @@ function doSleep {
     NOW=$(date -d @$NOW_SEC +"%Y-%m-%d %H:%M:%S")
     END_SEC=$((NOW_SEC + WAIT_SEC))
     END=$(date -d @$END_SEC +"%Y-%m-%d %H:%M:%S")
-    echo "$NOW - sleeping $1 seconds until '$END'..." 1>&2
+    echo "$NOW - sleeping $WAIT_SEC seconds until '$END'..." 1>&2
     sleep $WAIT_SEC
     #sleep 0
     NOW=$(date +"%Y-%m-%d %H:%M:%S")
