@@ -16,8 +16,8 @@ function doSleep {
     echo "$NOW - done sleeping" 1>&2
     exit 0
 }
-
-if [[ $UNTIL =~ '^[0-9]+$' ]] ; then
+re='^[0-9]+$'
+if [[ $UNTIL =~ $re ]] ; then
     echo "Specifying directly the wait time $UNTIL sec..."
     WSEC=$UNTIL
 elif echo "$UNTIL" | grep -q '^20..-..-..'; then # starts with a date (like '2019-12-20')
