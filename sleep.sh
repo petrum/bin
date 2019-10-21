@@ -18,10 +18,10 @@ function doSleep {
 }
 re='^[0-9]+$'
 if [[ $UNTIL =~ $re ]] ; then
-    echo "Specifying directly the wait time $UNTIL sec..."
+    echo "Specifying directly the wait time $UNTIL sec..." 1>&2
     WSEC=$UNTIL
 elif echo "$UNTIL" | grep -q '^20..-..-..'; then # starts with a date (like '2019-12-20')
-    echo "Specifying a datetime..."
+    echo "Specifying a datetime..." 1>&2
     D=$(date -d "$UNTIL" +%s)
     WSEC=$((D - NOW_SEC))
     if [[ $WSEC -lt 0 ]]; then
@@ -29,10 +29,10 @@ elif echo "$UNTIL" | grep -q '^20..-..-..'; then # starts with a date (like '201
         exit -1
     fi
 else
-    echo "Specify a time..."
+    echo "Specify a time..." 1>&2
     D=$(date -d "$UNTIL" +%s)
     if [[ $D -lt $NOW_SEC ]]; then
-        echo "Too late for today, going for next day..."
+        echo "Too late for today, going for next day..." 1>&2
         D=$(date -d "$UNTIL 1 day" +%s)
     fi
     WSEC=$((D - NOW_SEC))
