@@ -67,7 +67,7 @@ if args.sort:
 del df['n']
 #df = df.set_index('ip')
 df = df.reset_index(drop=True)
-header = ['dn', 'descr'] if args.brief else df.columns
+header = ['descr'] if args.brief else df.columns
 if not args.descriptions:
     header = [x for x in header if x not in ['expected', 'descr']]
 
