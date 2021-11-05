@@ -15,7 +15,6 @@ function doSleep {
     END=$(date -d @$END_SEC +"%Y-%m-%d %H:%M:%S")
     echo "$NOW - sleeping $WAIT_SEC seconds until '$END'..." 1>&2
     sleep $WAIT_SEC
-    #sleep 0
     NOW=$(date +"%Y-%m-%d %H:%M:%S")
     echo "$NOW - done sleeping" 1>&2
     exit 0
@@ -24,17 +23,13 @@ re='^[0-9]+$'
 if [[ $UNTIL =~ $re ]] ; then
     echo "Specifying directly the wait time $UNTIL sec..." 1>&2
     WSEC=$UNTIL
-elif echo "$UNTIL" | grep -q '^....-..-..'; then # starts with a date (like '2019-12-20')
-    echo "Specifying a datetime..." 1>&2
-    WSEC=$(($(date -d "$UNTIL" +%s) - NOW_SEC))
 else
-    echo "Specifying a time..." 1>&2
+    UNTIL_TIME=0 && echo "$UNTIL" | grep -q '^....-..-..' || UNTIL_TIME=1
+    echo "Specifying a time = $UNTIL_TIME..." 1>&2
     WSEC=$(($(date -d "$UNTIL" +%s) - NOW_SEC))
-    if [[ $WSEC -lt 0 ]]; then
+    if [[ $WSEC -lt 0 && $UNTIL_TIME = 1 ]]; then
         echo "Too late for today, going for next day..." 1>&2
         WSEC=$(($(date -d "$UNTIL 1 day" +%s) - NOW_SEC))
     fi
 fi
-
 doSleep $WSEC
-
