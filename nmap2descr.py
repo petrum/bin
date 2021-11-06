@@ -64,10 +64,10 @@ info(nmap)
 df = pd.merge(nmap, d, how='left', left_on='mac', right_on='mac')
 if args.sort:
     df = df.sort_values(by='n')
-del df['n']
+#del df['n']
 #df = df.set_index('ip')
 df = df.reset_index(drop=True)
-header = ['descr'] if args.brief else df.columns
+header = ['n', 'descr'] if args.brief else df.columns
 if not args.descriptions:
     header = [x for x in header if x not in ['expected', 'descr']]
 
