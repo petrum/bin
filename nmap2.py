@@ -42,7 +42,7 @@ class NMap:
             self.index = self.index + 1
             return df
         df = pd.DataFrame(columns=['ip', 'dn', 'mac', 'company'])
-        cmd = "/usr/bin/sudo /usr/bin/nmap -sP 192.168.1.1/24"
+        cmd = "/usr/bin/sudo /usr/bin/nmap -sP 10.0.0.1/24"
         code, out = subprocess.getstatusoutput(cmd)
         if code != 0:
             logging.error("The '{}' command returned code = {}".format(cmd, code)) 
@@ -110,9 +110,9 @@ def main():
     parser.add_argument('--email', help='The email', required=False)
     parser.add_argument('--ago', help='The ago period in seconds', required=False)
     parser.add_argument('--loop', help='The loop period in seconds', required=False)
-
     args = parser.parse_args()
     logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-5s %(message)s', datefmt='%Y%m%d %H:%M:%S', level=logging.DEBUG if args.verbose else logging.WARNING)
+    logging.debug("started")
     n = NMap(args.descriptions, args.tests)
 
     df = n.get()
