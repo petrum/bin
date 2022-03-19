@@ -1,10 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import pandas as pd
 import sys
 import fileinput
 import re
-import commands
+import subprocess
 import argparse
 import logging
 
@@ -34,7 +34,7 @@ if args.descriptions:
 info(d)
 nmap = pd.DataFrame(columns=['ip', 'dn', 'mac', 'company'])
 
-code, myMac = commands.getstatusoutput("/sbin/ifconfig | grep HWaddr | head -n 1 | sed 's/.*HWaddr \\(.*\\)/\\1/g'")
+code, myMac = subprocess.getstatusoutput("/sbin/ifconfig | grep HWaddr | head -n 1 | sed 's/.*HWaddr \\(.*\\)/\\1/g'")
 info(code, myMac)
 
 for line in sys.stdin:
@@ -71,9 +71,9 @@ header = ['n', 'descr'] if args.brief else df.columns
 if not args.descriptions:
     header = [x for x in header if x not in ['expected', 'descr']]
 
-print df[header]
+print( df[header])
 
 if args.unexpected:
-    print "Unexpected wi-fi:"
-    print df[df.expected != 1].T
+    print("Unexpected wi-fi:")
+    print(df[df.expected != 1].T)
 
