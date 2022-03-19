@@ -54,13 +54,13 @@ for line in sys.stdin:
         last_index = len(nmap) - 1
         nmap.loc[last_index]['mac'] = m.group(1)
         nmap.loc[last_index]['company'] = m.group(2)
-info(nmap)
+info("\n", nmap)
 noMac = nmap.mac.isnull()
-nmap.ix[noMac, 'mac'] = myMac.upper().rstrip()
+nmap.loc[noMac, 'mac'] = myMac.upper().rstrip()
 info(nmap)
 
 nmap['n'] = nmap.ip.str.split('.', expand=True)[3].astype(int)
-info(nmap)
+info("\n", nmap)
 df = pd.merge(nmap, d, how='left', left_on='mac', right_on='mac')
 if args.sort:
     df = df.sort_values(by='n')
@@ -71,7 +71,7 @@ header = ['n', 'descr'] if args.brief else df.columns
 if not args.descriptions:
     header = [x for x in header if x not in ['expected', 'descr']]
 
-print( df[header])
+print(df[header])
 
 if args.unexpected:
     print("Unexpected wi-fi:")
