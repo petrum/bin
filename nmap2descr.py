@@ -48,7 +48,7 @@ for line in sys.stdin:
         if n:
             nmap.loc[len(nmap)] = [n.group(1), None, None, None]
 
-    m = re.search('MAC Address: (.*) \((.*)\)', line)
+    m = re.search('MAC Address: ([^ ]*) \((.*)\)', line)
     if m:
         info(m.group(1), m.group(2))
         last_index = len(nmap) - 1
