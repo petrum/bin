@@ -42,7 +42,7 @@ class NMap:
             self.index = self.index + 1
             return df
         df = pd.DataFrame(columns=['ip', 'dn', 'mac', 'company'])
-        cmd = "/usr/bin/sudo /usr/bin/nmap -sP 10.0.0.1/24"
+        cmd = "/usr/bin/sudo /usr/bin/nmap -sP 192.168.1.1/24"
         code, out = subprocess.getstatusoutput(cmd)
         if code != 0:
             logging.error("The '{}' command returned code = {}".format(cmd, code)) 
