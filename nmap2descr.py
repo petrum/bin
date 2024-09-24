@@ -39,16 +39,16 @@ info(code, myMac)
 
 for line in sys.stdin:
     line = line.rstrip()
-    n = re.search('Nmap scan report for (.*) \((.*)\)', line)
+    n = re.search(r'Nmap scan report for (.*) \((.*)\)', line)
     if n:
         info(n.group(1), n.group(2))
         nmap.loc[len(nmap)] = [n.group(2), n.group(1), None, None]
     else:
-        n = re.search('Nmap scan report for (.*)', line)
+        n = re.search(r'Nmap scan report for (.*)', line)
         if n:
             nmap.loc[len(nmap)] = [n.group(1), None, None, None]
 
-    m = re.search('MAC Address: ([^ ]*) \((.*)\)', line)
+    m = re.search(r'MAC Address: ([^ ]*) \((.*)\)', line)
     if m:
         info(m.group(1), m.group(2))
         last_index = len(nmap) - 1
